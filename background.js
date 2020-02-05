@@ -1,6 +1,8 @@
 const PRINT_HEADERS = false;
 const PRINT_SECURITY_INFO = true;
 
+var trackers = 0;
+
 //comment test
 
 function onrequest(req) {
@@ -16,13 +18,14 @@ function onrequest(req) {
 
   // let's do something special if an image is loaded:
   if (req.type=="image") {
-     console.log("Ooh, it's a picture!");
+     //console.log("Ooh, it's a picture!");
 
      let img = new Image();
      let imgChecked = false;
      img.onload = function(){
-       if(this.width == 1 || this.height == 1) {
-        console.log("TRACKER!");
+       if(this.width == 1 && this.height == 1) {
+		trackers = trackers + 1;
+        console.log("TRACKER! #" + trackers);
         return {cancel:true}
       }
        imgChecked = true;
@@ -33,10 +36,10 @@ function onrequest(req) {
   }
 
   if (blackhosts.indexOf(req.requestHeaders[0].value) >= 0) {
-    console.log("Cancelled!");
+    //console.log("Cancelled!");
     return {cancel:true}
   }
-  console.log("Not cancelled!");
+  //console.log("Not cancelled!");
 
 
 
@@ -49,13 +52,12 @@ function onrequest(req) {
     if (req.requestHeaders[i].name == "User-Agent") {
       
       req.requestHeaders[i].value = "";
-      if (PRINT_SECURITY_INFO)
-        console.log("Private data removed!");
+      //if (PRINT_SECURITY_INFO)
+      //  console.log("Private data removed!");
     }
-    if (PRINT_HEADERS)
-      console.log("At position "+ i +" we find: Name:'"+ req.requestHeaders[i].name + "' Value: '" + req.requestHeaders[i].value + "'");      // print a line for each element
+    //if (PRINT_HEADERS)
+    //  console.log("At position "+ i +" we find: Name:'"+ req.requestHeaders[i].name + "' Value: '" + req.requestHeaders[i].value + "'");      // print a line for each element
   }
-
   return {requestHeaders:req.requestHeaders};
 }
 
