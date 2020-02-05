@@ -1,7 +1,7 @@
 // AUTHORS //
 
-// Adam Jędrzejec, s2478951
-// Berend Visser
+// Adam Jędrzejec, S2478951
+// Berend Visser, S1499270
 
 
 
