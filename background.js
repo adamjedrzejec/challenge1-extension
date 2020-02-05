@@ -1,4 +1,4 @@
-const PRINT_HEADERS = true;
+const PRINT_HEADERS = false;
 const PRINT_SECURITY_INFO = true;
 
 //comment test
@@ -12,11 +12,24 @@ function onrequest(req) {
 
   // log what file we're going to fetch:
   
-  console.log("Loading: " + req.method +" "+ req.url + " "+ req.type);
+  // console.log("Loading: " + req.method +" "+ req.url + " "+ req.type);
 
   // let's do something special if an image is loaded:
   if (req.type=="image") {
      console.log("Ooh, it's a picture!");
+
+     let img = new Image();
+     let imgChecked = false;
+     img.onload = function(){
+       if(this.width == 1 || this.height == 1) {
+        console.log("TRACKER!");
+        return {cancel:true}
+      }
+       imgChecked = true;
+     };
+     img.src = req.url;
+   
+     //while(!imgChecked) {}
   }
 
   if (blackhosts.indexOf(req.requestHeaders[0].value) >= 0) {
@@ -24,6 +37,8 @@ function onrequest(req) {
     return {cancel:true}
   }
   console.log("Not cancelled!");
+
+
 
   // req also contains an array called requestHeaders containing the name and value of each header.
   // You can access the name and value of the i'th header as req.requestHeaders[i].name and req.requestHeaders[i].value ,
@@ -43,7 +58,6 @@ function onrequest(req) {
 
   return {requestHeaders:req.requestHeaders};
 }
-
 
 // no need to change the following, it just makes sure that the above function is called whenever the browser wants to fetch a file
 browser.webRequest.onBeforeSendHeaders.addListener(
