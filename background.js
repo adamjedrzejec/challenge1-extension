@@ -1,6 +1,8 @@
 const PRINT_HEADERS = true;
 const PRINT_SECURITY_INFO = true;
 
+//comment test
+
 function onrequest(req) {
   // This function will be called everytime the browser is about to send out an http or https request.
   // The req variable contains all information about the request.
